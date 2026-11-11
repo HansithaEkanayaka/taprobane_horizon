@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Icon from './Icon'
 
 const navItems = [
   { label: 'Home', href: '#home' },
@@ -12,12 +13,24 @@ const navItems = [
 export default function Navbar() {
   const [open, setOpen] = useState(false)
 
+  // Close the mobile menu with Escape, and when the screen grows to desktop size.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    const onResize = () => window.innerWidth >= 768 && setOpen(false)
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('resize', onResize)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [])
+
   return (
     <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-navy-950/80 backdrop-blur-md">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Brand Logo */}
-        <a href="#home" className="font-serif text-2xl font-bold tracking-wide text-gold">
-          Taprobane Horizon
+        <a href="#home" className="font-serif text-2xl font-bold tracking-wide text-white">
+          Taprobane <span className="text-gold">Horizon</span>
         </a>
 
         {/* Desktop Navigation Links */}
@@ -38,16 +51,17 @@ export default function Navbar() {
             className="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-gold to-[#dfc385] text-navy-900 font-semibold px-6 py-2.5 rounded-full shadow-lg shadow-gold/10 hover:shadow-gold/25 hover:scale-105 active:scale-95 transition-all"
           >
             <span>Book Now</span>
-            <i className="fa-solid fa-arrow-right text-xs"></i>
+            <Icon name="arrow" className="h-4 w-4" />
           </a>
-
+          
           {/* Mobile Menu Button */}
           <button
             onClick={() => setOpen(!open)}
             aria-label="Toggle Menu"
+            aria-expanded={open}
             className="md:hidden text-white text-2xl focus:outline-none p-1"
           >
-            <i className={`fa-solid ${open ? 'fa-xmark' : 'fa-bars'}`}></i>
+            <Icon name={open ? 'x' : 'menu'} className="h-7 w-7" />
           </button>
         </div>
       </nav>
@@ -73,7 +87,7 @@ export default function Navbar() {
               className="flex w-full items-center justify-center gap-2 bg-gradient-to-r from-gold to-[#dfc385] text-navy-900 font-semibold py-3 rounded-xl shadow-md"
             >
               <span>Book Now</span>
-              <i className="fa-solid fa-arrow-right text-xs"></i>
+              <Icon name="arrowRight" className="h-4 w-4" />
             </a>
           </li>
         </ul>

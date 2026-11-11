@@ -11,7 +11,7 @@ export default function Footer() {
           
           {/* Column 1: Brand Info */}
           <div className="space-y-4">
-            <h3 className="font-serif text-2xl tracking-wide text-gold">Grand Horizon</h3>
+            <h3 className="font-serif text-2xl tracking-wide text-white">Taprobane <span className="text-gold">Horizon</span></h3>
             <p className="text-sm leading-relaxed text-white/60">
               Relax in comfort, enjoy world-class service, and make memories that last.
             </p>
@@ -26,11 +26,19 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <a href="#about" className="transition-colors duration-200 hover:text-gold flex items-center gap-2">About Us
+                </a>
+              </li>
+              <li>
                 <a href="#rooms" className="transition-colors duration-200 hover:text-gold flex items-center gap-2">Rooms & Suites
                 </a>
               </li>
               <li>
                 <a href="#gallery" className="transition-colors duration-200 hover:text-gold flex items-center gap-2">Gallery
+                </a>
+              </li>
+              <li>
+                <a href="#amenities" className="transition-colors duration-200 hover:text-gold flex items-center gap-2">Amenities
                 </a>
               </li>
             </ul>
@@ -50,14 +58,14 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Icon name="mail" className="h-4 w-4 text-gold mt-0.5" />
-                <a href="mailto:info@grandhorizon.com" className="hover:text-gold transition-colors">info@grandhorizon.com</a>
+                <a href="mailto:info@taprobanehorizon.com" className="hover:text-gold transition-colors">info@taprobanehorizon.com</a>
               </li>
             </ul>
           </div>
 
           {/* Column 4: Social / Follow */}
           <div>
-            <h4 className="font-sans text-xs font-bold uppercase tracking-widest text-white">Follow Grand Horizon</h4>
+            <h4 className="font-sans text-xs font-bold uppercase tracking-widest text-white">Follow Taprobane Horizon</h4>
             <p className="mt-3 text-xs leading-relaxed text-white/50">
               Connect with us on social media for daily coastal inspiration and exclusive offers.
             </p>
@@ -65,7 +73,9 @@ export default function Footer() {
               {["instagram", "facebook", "twitter"].map((s) => (
                 <a 
                   key={s} 
-                  href="#top" 
+                  href={`https://www.${s}.com/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={s} 
                   className="grid h-10 w-10 place-items-center rounded-lg border border-white/10 bg-white/5 text-white/70 transition-all duration-300 hover:border-gold hover:text-gold hover:bg-gold/10 hover:scale-105"
                 >
@@ -79,7 +89,7 @@ export default function Footer() {
 
         {/* Bottom Copyright Bar */}
         <div className="mt-16 border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/40 gap-4">
-          <p>© {new Date().getFullYear()} Grand Horizon. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Taprobane Horizon. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#privacy" className="hover:text-white/70 transition-colors">Privacy Policy</a>
             <a href="#terms" className="hover:text-white/70 transition-colors">Terms of Service</a>
