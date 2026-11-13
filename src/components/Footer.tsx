@@ -1,6 +1,8 @@
 import Icon from "./Icon"
 
-export default function Footer() {
+import type { PolicyKind } from './PolicyModal'
+
+export default function Footer({ onOpenPolicy }: { onOpenPolicy: (kind: PolicyKind) => void }) {
   return (
     <footer id="contact" className="relative border-t border-white/10 bg-navy-900 text-white overflow-hidden">
       {/* Subtle decorative top glow or gradient border effect */}
@@ -91,8 +93,8 @@ export default function Footer() {
         <div className="mt-16 border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/40 gap-4">
           <p>© {new Date().getFullYear()} Taprobane Horizon. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#privacy" className="hover:text-white/70 transition-colors">Privacy Policy</a>
-            <a href="#terms" className="hover:text-white/70 transition-colors">Terms of Service</a>
+            <button onClick={() => onOpenPolicy('privacy')} className="hover:text-white/70 transition-colors">Privacy Policy</button>
+            <button onClick={() => onOpenPolicy('terms')} className="hover:text-white/70 transition-colors">Terms of Service</button>
           </div>
         </div>
       </div>
