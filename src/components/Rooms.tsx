@@ -27,7 +27,7 @@ export default function Rooms({ search, onClearSearch, onBook }: RoomsProps) {
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <p className="mb-3 text-xs sm:text-sm uppercase tracking-[0.3em] text-gold font-semibold">
+          <p className="mb-3 text-xs sm:text-sm uppercase tracking-[0.2em] text-gold font-semibold">
             Accommodation
           </p>
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
@@ -107,7 +107,7 @@ export default function Rooms({ search, onClearSearch, onBook }: RoomsProps) {
                     {room.name}
                   </h3>
                   <div className="flex items-center gap-2 mt-2 text-xs text-white/60 font-medium">
-                    <i className="fa-solid fa-user-group text-gold"></i>
+                    <Icon name="user" className="h-4 w-4 text-gold" />
                     <span>Up to {room.guests} guests</span>
                   </div>
                 </div>

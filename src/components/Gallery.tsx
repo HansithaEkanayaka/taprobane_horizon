@@ -39,7 +39,7 @@ export default function Gallery() {
   return (
     <section id="gallery" className="bg-navy-800 py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <p className="text-center text-sm uppercase tracking-[0.3em] text-gold">Gallery</p>
+        <p className="text-center text-sm uppercase tracking-[0.2em] text-gold">Gallery</p>
         <h2 className="mt-3 text-center font-serif text-4xl">A Glimpse of Taprobane Horizon</h2>
 
         <div className="mt-8 flex flex-wrap justify-center gap-3">

@@ -45,7 +45,7 @@ export default function Hero({ onSearch }: HeroProps) {
       <div className="absolute inset-0 bg-navy-900/75 backdrop-blur-[2px]" />
 
       <div className="relative z-10 mx-auto max-w-5xl px-6 text-center w-full">
-        <p className="mb-4 text-xs sm:text-sm uppercase tracking-[0.3em] text-gold font-semibold">
+        <p className="mb-4 text-xs sm:text-sm uppercase tracking-[0.2em] text-gold font-semibold">
           Luxury Stay & Resort
         </p>
         <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl text-white">

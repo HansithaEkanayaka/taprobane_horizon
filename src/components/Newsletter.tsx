@@ -16,7 +16,7 @@ export default function Newsletter() {
     <section className="mx-auto max-w-3xl px-6 py-24 text-center">
       <h2 className="font-serif text-4xl">Stay in the Loop</h2>
       <p className="mt-4 text-white/60">
-        Subscribe for exclusive offers and news from Grand Horizon.
+        Subscribe for exclusive offers and news from Taprobane Horizon.
       </p>
 
       {sent ? (
