@@ -2,18 +2,22 @@ import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import Icon from './Icon'
 import { addDays, formatDate, nightsBetween, todayISO } from '../utils/dates'
-import type { Room, SearchParams } from '../types'
+import { findConflict } from '../hooks/useBookings'
+import type { Booking, NewBooking, Room, SearchParams } from '../types'
 
 interface BookingModalProps {
   room: Room
   search: SearchParams | null
+  existing: Booking[]
+  onBooked: (data: NewBooking) => Booking
+  onViewBookings: (reference: string) => void
   onClose: () => void
 }
 
 const inputClass =
   'w-full rounded-xl border border-white/15 bg-navy-950 px-4 py-2.5 text-sm text-white outline-none focus:border-gold [color-scheme:dark]'
 
-export default function BookingModal({ room, search, onClose }: BookingModalProps) {
+export default function BookingModal({ room, search, existing, onBooked, onViewBookings, onClose }: BookingModalProps) {
   const today = todayISO()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -23,7 +27,7 @@ export default function BookingModal({ room, search, onClose }: BookingModalProp
   const [guests, setGuests] = useState(Math.min(search?.guests ?? 2, room.guests))
   const [notes, setNotes] = useState('')
   const [error, setError] = useState('')
-  const [reference, setReference] = useState('')
+  const [confirmed, setConfirmed] = useState<Booking | null>(null)
 
   // Close on Escape and stop the page behind from scrolling while the modal is open.
   useEffect(() => {
@@ -45,9 +49,32 @@ export default function BookingModal({ room, search, onClose }: BookingModalProp
     if (name.trim().length < 2) return setError('Please enter your full name.')
     if (checkIn < today) return setError('Check-in date cannot be in the past.')
     if (nights === 0) return setError('Check-out must be after check-in.')
+    const clash = findConflict(existing, room.id, checkIn, checkOut)
+    if (clash) {
+      return setError(
+        `You already have the ${room.name} booked ${formatDate(clash.checkIn)} – ${formatDate(clash.checkOut)} (${clash.reference}). Pick different dates.`,
+      )
+    }
     setError('')
-    // No backend yet: a real site would POST this to an API here.
-    setReference('TH-' + Math.random().toString(36).slice(2, 8).toUpperCase())
+    // Saved to this browser (see useBookings). A real site would POST it to an API as well.
+    setConfirmed(
+      onBooked({
+        roomId: room.id,
+        roomName: room.name,
+        category: room.category,
+        image: room.image,
+        pricePerNight: room.price,
+        guestName: name.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        checkIn,
+        checkOut,
+        guests,
+        nights,
+        total,
+        notes: notes.trim(),
+      }),
+    )
   }
 
   return (
@@ -70,27 +97,36 @@ export default function BookingModal({ room, search, onClose }: BookingModalProp
           <Icon name="x" className="h-6 w-6" />
         </button>
 
-        {reference ? (
+        {confirmed ? (
           <div className="py-6 text-center">
             <div className="mx-auto flex h-16 w-16 items-center justify-center text-gold">
               <Icon name="check" className="h-16 w-16" />
             </div>
-            <h3 id="booking-title" className="mt-4 font-serif text-3xl">Booking Request Received</h3>
+            <h3 id="booking-title" className="mt-4 font-serif text-3xl">Booking Confirmed</h3>
             <p className="mt-3 text-sm text-white/70">
-              Thank you, {name.trim()}. We have reserved the <span className="text-gold">{room.name}</span> for{' '}
-              {formatDate(checkIn)} – {formatDate(checkOut)} ({nights} {nights === 1 ? 'night' : 'nights'}).
+              Thank you, {confirmed.guestName}. We have reserved the <span className="text-gold">{confirmed.roomName}</span> for{' '}
+              {formatDate(confirmed.checkIn)} – {formatDate(confirmed.checkOut)} ({confirmed.nights}{' '}
+              {confirmed.nights === 1 ? 'night' : 'nights'}).
             </p>
             <p className="mt-4 text-sm text-white/60">Reference</p>
-            <p className="font-serif text-2xl tracking-widest text-gold">{reference}</p>
+            <p className="font-serif text-2xl tracking-widest text-gold">{confirmed.reference}</p>
             <p className="mt-2 text-xs text-white/50">
-              A confirmation will be sent to {email}.
+              Saved to My Bookings. Keep your reference for {confirmed.email}.
             </p>
-            <button
-              onClick={onClose}
-              className="mt-8 rounded-full bg-gold px-8 py-3 font-medium text-navy-900 transition hover:opacity-90"
-            >
-              Done
-            </button>
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <button
+                onClick={() => onViewBookings(confirmed.reference)}
+                className="rounded-full bg-gold px-8 py-3 font-medium text-navy-900 transition hover:opacity-90"
+              >
+                View My Bookings
+              </button>
+              <button
+                onClick={onClose}
+                className="rounded-full border border-white/20 px-8 py-3 font-medium transition hover:border-gold hover:text-gold"
+              >
+                Done
+              </button>
+            </div>
           </div>
         ) : (
           <>
